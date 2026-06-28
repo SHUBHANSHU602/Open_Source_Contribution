@@ -21,7 +21,7 @@ My work primarily focused on **CI/CD workflow optimization, test reliability, co
 
 ### 1. CI Workflow Optimization using Matrix Strategy
 
-🔗 **PR:** https://github.com/asyncapi/generator/pull/2034
+🔗 **PR:** https://github.com/asyncapi/generator/pull/2024
 
 #### 📍 Problem
 
@@ -175,7 +175,7 @@ True unit tests should validate business logic without depending on external sys
 
 ### 5. Component Tests for CompileOperationSchemas
 
-🔗 **PR:** https://github.com/asyncapi/generator/pull/2024
+🔗 **PR:** https://github.com/asyncapi/generator/pull/2034
 
 #### 📍 Problem
 
@@ -461,7 +461,7 @@ Optimization should be driven by actual performance requirements rather than hab
 
 ### 4. Modernizing Asynchronous Error Handling
 
-🔗 **PR:** https://github.com/asyncapi/website/pull/4967
+🔗 **PR:** https://github.com/asyncapi/website/pull/5170
 
 #### 📍 Problem
 
@@ -500,7 +500,7 @@ Using idiomatic async/await patterns results in clearer, more maintainable code 
 
 ### 5. Improving Footer Badge Fallback UI
 
-🔗 **PR:** https://github.com/asyncapi/website/pull/4900 *(UI Styling Contribution)*
+🔗 **PR:** https://github.com/asyncapi/website/pull/4967 *(UI Styling Contribution)*
 
 #### 📍 Problem
 
