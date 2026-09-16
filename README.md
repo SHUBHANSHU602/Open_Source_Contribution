@@ -290,6 +290,116 @@ Accurate documentation is a critical part of developer experience. Even small na
 
 ---
 
+### 9. Concurrency Control for Test Project Workflow
+
+🔗 **PR:** https://github.com/asyncapi/generator/pull/2206 *(Merged)*
+
+#### 📍 Problem
+
+The `Test using test project` workflow continued running outdated CI jobs when multiple commits were pushed rapidly to the same pull request.
+
+This resulted in:
+
+* Redundant workflow executions
+* Unnecessary consumption of CI resources
+* Slower feedback for the latest commit
+* Noise from obsolete workflow runs
+
+#### ⚙️ Solution
+
+Added workflow-level concurrency control by:
+
+* Creating a concurrency group scoped to each pull request
+* Enabling `cancel-in-progress: true`
+* Automatically cancelling superseded workflow runs
+* Ensuring only the latest commit continued through validation
+
+#### 💡 Key Engineering Insight
+
+Continuous integration should validate the **latest relevant state** of a pull request. Cancelling obsolete runs improves feedback speed and prevents infrastructure resources from being spent on commits that are no longer current.
+
+#### ✅ Impact
+
+* Reduced redundant CI execution
+* Conserved GitHub Actions resources
+* Prioritized validation of the latest commit
+* Improved developer feedback time
+
+---
+
+### 10. npm Dependency Caching for Test Project Workflow
+
+🔗 **PR:** https://github.com/asyncapi/generator/pull/2207 *(Merged)*
+
+#### 📍 Problem
+
+The `Test using test project` workflow repeatedly downloaded unchanged npm dependencies during acceptance-test runs.
+
+This caused:
+
+* Repeated network downloads
+* Longer dependency setup time
+* Unnecessary network and CI resource usage
+* Slower workflow execution
+
+#### ⚙️ Solution
+
+Enabled the built-in npm cache in `actions/setup-node` and configured it to use the repository's existing root `package-lock.json`.
+
+The existing `npm ci` step was preserved to maintain deterministic, reproducible dependency installation.
+
+#### 💡 Key Engineering Insight
+
+Dependency caching and reproducible installation solve different problems: caching improves performance, while `npm ci` preserves consistency. Using both provides faster workflows without weakening build reliability.
+
+#### ✅ Impact
+
+* Reduced repeated dependency downloads
+* Improved acceptance-workflow setup time
+* Lowered unnecessary network usage
+* Preserved reproducible npm installations
+
+---
+
+### 11. Format-aware AsyncAPI Path in Generated WebSocket Clients
+
+🔗 **PR:** https://github.com/asyncapi/generator/pull/2246 *(Open)*
+
+#### 📍 Problem
+
+When a JSON AsyncAPI document was used as input, the generator emitted `asyncapi.json`, but the generated JavaScript WebSocket client still referenced `asyncapi.yaml`.
+
+This mismatch caused:
+
+* Generated clients to reference a non-existent file
+* JSON-based generation to produce incorrect runtime paths
+* Failures when references were resolved from the generated document
+* Inconsistent behavior between JSON and YAML inputs
+
+#### ⚙️ Solution
+
+Updated the WebSocket client generation logic to select the AsyncAPI filename extension from the original input format.
+
+Implemented:
+
+* `asyncapi.json` references for JSON input
+* Continued `asyncapi.yaml` references for YAML input
+* Support for default and custom document directories
+* Regression tests and snapshot validation for the affected scenarios
+
+#### 💡 Key Engineering Insight
+
+Generated code must stay consistent with the artifacts emitted by the generator. Format-dependent paths should be derived from the source document rather than hard-coded.
+
+#### ✅ Expected Impact
+
+* Correct document references in JSON-generated WebSocket clients
+* Preserved behavior for YAML-based generation
+* Reduced runtime failures caused by missing document files
+* Regression protection for default and custom output directories
+
+---
+
 # 🧠 Key Learnings
 
 Throughout these contributions I gained practical experience in:
