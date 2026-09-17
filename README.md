@@ -361,44 +361,6 @@ Dependency caching and reproducible installation solve different problems: cachi
 
 ---
 
-### 11. Format-aware AsyncAPI Path in Generated WebSocket Clients
-
-🔗 **PR:** https://github.com/asyncapi/generator/pull/2246 *(Open)*
-
-#### 📍 Problem
-
-When a JSON AsyncAPI document was used as input, the generator emitted `asyncapi.json`, but the generated JavaScript WebSocket client still referenced `asyncapi.yaml`.
-
-This mismatch caused:
-
-* Generated clients to reference a non-existent file
-* JSON-based generation to produce incorrect runtime paths
-* Failures when references were resolved from the generated document
-* Inconsistent behavior between JSON and YAML inputs
-
-#### ⚙️ Solution
-
-Updated the WebSocket client generation logic to select the AsyncAPI filename extension from the original input format.
-
-Implemented:
-
-* `asyncapi.json` references for JSON input
-* Continued `asyncapi.yaml` references for YAML input
-* Support for default and custom document directories
-* Regression tests and snapshot validation for the affected scenarios
-
-#### 💡 Key Engineering Insight
-
-Generated code must stay consistent with the artifacts emitted by the generator. Format-dependent paths should be derived from the source document rather than hard-coded.
-
-#### ✅ Expected Impact
-
-* Correct document references in JSON-generated WebSocket clients
-* Preserved behavior for YAML-based generation
-* Reduced runtime failures caused by missing document files
-* Regression protection for default and custom output directories
-
----
 
 # 🧠 Key Learnings
 
